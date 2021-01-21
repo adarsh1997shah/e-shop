@@ -1,14 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { NavLink } from 'react-router-dom';
 
 const navItems = [
   {
     to: '/',
     name: 'Home',
-  },
-  {
-    to: '/categories',
-    name: 'Categories',
   },
   {
     to: '/checkout',
@@ -30,4 +26,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default memo(Navbar);
