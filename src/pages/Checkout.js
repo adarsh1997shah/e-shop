@@ -1,8 +1,85 @@
-import React from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import MainPageLayout from '../components/MainPageLayout';
+import { getFormatCurrency, useCartReducer } from '../helper';
+import data from '../datasets/products.json';
+
+const reducer = (prevState, action) => {
+  switch (action.type) {
+    case 'INCREMENT':
+      prevState += 1;
+      break;
+    case 'DECREMENT':
+      prevState -= 1;
+      break;
+    default:
+      throw new Error('invalid operation');
+  }
+
+  return prevState;
+};
 
 function Checkout() {
-  return <MainPageLayout>Checkout</MainPageLayout>;
+  const [cartProducts, setCartProducts] = useState([]);
+  const [cartProductsId, cartDispatch] = useCartReducer();
+  const [productCount, productCountDispatch] = useReducer(reducer, 1);
+
+  useEffect(() => {
+    const products = data.filter(item => cartProductsId.includes(item.id));
+    setCartProducts(products);
+  }, [cartProductsId]);
+
+  const handleRemoveFromCart = e => {
+    const el = e.target;
+
+    cartDispatch({ type: 'REMOVE', id: el.id });
+  };
+
+  return (
+    <MainPageLayout>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          {cartProducts.map(item => (
+            <tr key={item.id}>
+              <td>{item.name}</td>
+              <td>{getFormatCurrency(item.currency, item.price)}</td>
+              <td>
+                <button
+                  type="button"
+                  onClick={() => productCountDispatch({ type: 'INCREMENT' })}
+                >
+                  +
+                </button>
+                <span>{productCount}</span>
+                <button
+                  type="button"
+                  onClick={() => productCountDispatch({ type: 'DECREMENT' })}
+                  disabled={productCount === 1}
+                >
+                  -
+                </button>
+              </td>
+              <td>
+                <button
+                  id={item.id}
+                  type="button"
+                  onClick={handleRemoveFromCart}
+                >
+                  Remove
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </MainPageLayout>
+  );
 }
 
 export default Checkout;

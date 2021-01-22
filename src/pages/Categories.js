@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import MainPageLayout from '../components/MainPageLayout';
 import Product from '../components/Product';
 import data from '../datasets/products.json';
-import { useFilterReducer } from '../helper';
+import { useCartReducer, useFilterReducer } from '../helper';
 
 const filters = [
   { text: 'Delivery', name: 'delivery' },
@@ -12,12 +12,13 @@ const filters = [
 
 function Categories() {
   const [products, setProducts] = useState(null);
-  const [filterOptions, dispatch] = useFilterReducer([]);
-  const [cartProduct, setCartProduct] = useState([]);
+  const [filterOptions, filterDispatch] = useFilterReducer([]);
+  const [cartProduct, cartDispatch] = useCartReducer();
   const { categoryId } = useParams();
 
   useEffect(() => {
     const categoryProduct = data.filter(item => item.categoryId === categoryId);
+
     setProducts(categoryProduct);
 
     if (filterOptions.length > 0) {
@@ -35,21 +36,17 @@ function Categories() {
   const handleAddToCart = e => {
     const el = e.target;
 
-    const currentData = [...cartProduct];
-    currentData.push(el.id);
-
-    setCartProduct(currentData);
+    cartDispatch({ type: 'ADD', id: el.id });
   };
   console.log(cartProduct);
-
   // Adding number of filter option.
   const handleFilter = e => {
     const el = e.target;
 
     if (el.checked) {
-      dispatch({ type: 'ADD', name: el.name });
+      filterDispatch({ type: 'ADD', id: el.name });
     } else {
-      dispatch({ type: 'REMOVE', name: el.name });
+      filterDispatch({ type: 'REMOVE', id: el.name });
     }
   };
 
