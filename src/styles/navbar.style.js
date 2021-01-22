@@ -28,6 +28,15 @@ export const NavBar = styled.div`
         &:hover {
           text-decoration: underline;
         }
+
+        span {
+          display: inline-block;
+          margin-left: 10px;
+          border-radius: 50%;
+          border: 1px solid black;
+          text-align: center;
+          width: 24px;
+        }
       }
     }
   }

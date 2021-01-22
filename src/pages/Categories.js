@@ -6,6 +6,12 @@ import Product from '../components/Product';
 import data from '../datasets/products.json';
 import { useFilterReducer } from '../helper';
 
+import {
+  FilterList,
+  ProductList,
+  ProductWrapper,
+} from '../styles/categories.style';
+
 const filters = [
   { text: 'Delivery', name: 'delivery' },
   { text: 'InStock', name: 'inStock' },
@@ -60,36 +66,46 @@ function Categories() {
     <MainPageLayout>
       <div>
         <h2>Filter</h2>
-        <ul>
+        <FilterList>
           {filters.map((filter, index) => (
             <li key={index}>
-              <input
-                type="checkbox"
-                name={filter.name}
-                onClick={handleFilter}
-              />
-              {filter.text}
+              <label htmlFor={index}>
+                <input
+                  id={index}
+                  type="checkbox"
+                  name={filter.name}
+                  onClick={handleFilter}
+                />
+                <span>{filter.text}</span>
+              </label>
             </li>
           ))}
-        </ul>
+        </FilterList>
       </div>
-      <ul>
-        {filterOptions.length === 0 && products.length === 0 && (
-          <li>Sorry no product for this category</li>
-        )}
-        {filterOptions.length > 0 && products.length === 0 && (
-          <li>Sorry no product for these filter</li>
-        )}
-        {products.map(product => (
-          <Product
-            key={product.id}
-            name={product.name}
-            id={product.id}
-            handleAddToCart={handleAddToCart}
-            isAddedToCart={cartProduct.includes(product.id)}
-          />
-        ))}
-      </ul>
+      <ProductWrapper>
+        <h2 className="product-heading">Products</h2>
+
+        <ProductList>
+          {filterOptions.length === 0 && products.length === 0 && (
+            <h3>Sorry no product for this category</h3>
+          )}
+          {filterOptions.length > 0 && products.length === 0 && (
+            <h3>Sorry no product for these filter</h3>
+          )}
+          {products.map(product => (
+            <Product
+              key={product.id}
+              name={product.name}
+              thumbnail={product.thumbnail}
+              price={product.price}
+              currency={product.currency}
+              id={product.id}
+              handleAddToCart={handleAddToCart}
+              isAddedToCart={cartProduct.includes(product.id)}
+            />
+          ))}
+        </ProductList>
+      </ProductWrapper>
     </MainPageLayout>
   );
 }
