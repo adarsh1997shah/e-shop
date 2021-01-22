@@ -3,7 +3,7 @@ import React from 'react';
 function Product({ name, id, handleAddToCart, isAddedToCart }) {
   return (
     <li>
-      <h4>{name}</h4>
+      <h2>{name}</h2>
       {isAddedToCart ? (
         <button id={id} type="button">
           Added to cart

@@ -59,7 +59,7 @@ function Categories() {
   return (
     <MainPageLayout>
       <div>
-        <h3>Filter</h3>
+        <h2>Filter</h2>
         <ul>
           {filters.map((filter, index) => (
             <li key={index}>

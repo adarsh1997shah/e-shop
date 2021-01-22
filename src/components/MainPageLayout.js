@@ -1,11 +1,13 @@
 import React from 'react';
 import Navbar from './Navbar';
 
+import { Wrapper } from '../styles/styles';
+
 function MainPageLayout({ children }) {
   return (
     <>
       <Navbar />
-      <div>{children}</div>
+      <Wrapper>{children}</Wrapper>
     </>
   );
 }
