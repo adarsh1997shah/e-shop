@@ -58,6 +58,6 @@ export const getFormatCurrency = (currency, number) => {
     currency,
     currencyDisplay: 'narrowSymbol',
   }).format(number);
-  console.log(formatCurrency);
+
   return formatCurrency;
 };

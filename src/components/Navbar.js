@@ -1,5 +1,8 @@
 import React, { memo } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useCartProduct } from '../cart.context';
+
+import { NavBar } from '../styles/navbar.style';
 
 const navItems = [
   {
@@ -13,16 +16,23 @@ const navItems = [
 ];
 
 function Navbar() {
+  const [cartProductsId] = useCartProduct();
+
   return (
-    <div>
+    <NavBar>
       <ul>
         {navItems.map((item, index) => (
           <li key={index}>
-            <NavLink to={item.to}>{item.name}</NavLink>
+            <NavLink exact to={item.to} activeClassName="selected">
+              {item.name}
+              {item.name === 'Checkout' && cartProductsId.length > 0 && (
+                <span>{cartProductsId.length}</span>
+              )}
+            </NavLink>
           </li>
         ))}
       </ul>
-    </div>
+    </NavBar>
   );
 }
 

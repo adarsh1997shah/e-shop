@@ -3,10 +3,10 @@ import Navbar from './Navbar';
 
 function MainPageLayout({ children }) {
   return (
-    <div>
+    <>
       <Navbar />
       <div>{children}</div>
-    </div>
+    </>
   );
 }
 

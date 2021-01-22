@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useCartProduct } from '../cart.context';
 import MainPageLayout from '../components/MainPageLayout';
 import Product from '../components/Product';
 import data from '../datasets/products.json';
-import { useCartReducer, useFilterReducer } from '../helper';
+import { useFilterReducer } from '../helper';
 
 const filters = [
   { text: 'Delivery', name: 'delivery' },
@@ -13,7 +14,7 @@ const filters = [
 function Categories() {
   const [products, setProducts] = useState(null);
   const [filterOptions, filterDispatch] = useFilterReducer([]);
-  const [cartProduct, cartDispatch] = useCartReducer();
+  const [cartProduct, cartDispatch] = useCartProduct();
   const { categoryId } = useParams();
 
   useEffect(() => {
@@ -38,7 +39,7 @@ function Categories() {
 
     cartDispatch({ type: 'ADD', id: el.id });
   };
-  console.log(cartProduct);
+
   // Adding number of filter option.
   const handleFilter = e => {
     const el = e.target;

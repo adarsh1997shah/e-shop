@@ -1,7 +1,8 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import MainPageLayout from '../components/MainPageLayout';
-import { getFormatCurrency, useCartReducer } from '../helper';
+import { getFormatCurrency } from '../helper';
 import data from '../datasets/products.json';
+import { useCartProduct } from '../cart.context';
 
 const reducer = (prevState, action) => {
   switch (action.type) {
@@ -20,7 +21,7 @@ const reducer = (prevState, action) => {
 
 function Checkout() {
   const [cartProducts, setCartProducts] = useState([]);
-  const [cartProductsId, cartDispatch] = useCartReducer();
+  const [cartProductsId, cartDispatch] = useCartProduct();
   const [productCount, productCountDispatch] = useReducer(reducer, 1);
 
   useEffect(() => {
@@ -36,48 +37,52 @@ function Checkout() {
 
   return (
     <MainPageLayout>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Quantity</th>
-          </tr>
-        </thead>
-        <tbody>
-          {cartProducts.map(item => (
-            <tr key={item.id}>
-              <td>{item.name}</td>
-              <td>{getFormatCurrency(item.currency, item.price)}</td>
-              <td>
-                <button
-                  type="button"
-                  onClick={() => productCountDispatch({ type: 'INCREMENT' })}
-                >
-                  +
-                </button>
-                <span>{productCount}</span>
-                <button
-                  type="button"
-                  onClick={() => productCountDispatch({ type: 'DECREMENT' })}
-                  disabled={productCount === 1}
-                >
-                  -
-                </button>
-              </td>
-              <td>
-                <button
-                  id={item.id}
-                  type="button"
-                  onClick={handleRemoveFromCart}
-                >
-                  Remove
-                </button>
-              </td>
+      {cartProductsId.length > 0 ? (
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Quantity</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {cartProducts.map(item => (
+              <tr key={item.id}>
+                <td>{item.name}</td>
+                <td>{getFormatCurrency(item.currency, item.price)}</td>
+                <td>
+                  <button
+                    type="button"
+                    onClick={() => productCountDispatch({ type: 'INCREMENT' })}
+                  >
+                    +
+                  </button>
+                  <span>{productCount}</span>
+                  <button
+                    type="button"
+                    onClick={() => productCountDispatch({ type: 'DECREMENT' })}
+                    disabled={productCount === 1}
+                  >
+                    -
+                  </button>
+                </td>
+                <td>
+                  <button
+                    id={item.id}
+                    type="button"
+                    onClick={handleRemoveFromCart}
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <h3>No products added to cart</h3>
+      )}
     </MainPageLayout>
   );
 }
