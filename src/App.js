@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Home from './pages/Home';
-import Categories from './pages/Categories';
-import Checkout from './pages/Checkout';
 import { CartProductContextProvider } from './cart.context';
+
+import Home from './pages/Home';
+import { Loader } from './styles/styles';
+
+const Categories = lazy(() => import('./pages/Categories'));
+const Checkout = lazy(() => import('./pages/Checkout'));
 
 function App() {
   return (
@@ -16,11 +19,15 @@ function App() {
             </Route>
 
             <Route path="/categories/:categoryId">
-              <Categories />
+              <Suspense fallback={<Loader>Loading...</Loader>}>
+                <Categories />
+              </Suspense>
             </Route>
 
             <Route path="/checkout">
-              <Checkout />
+              <Suspense fallback={<Loader>Loading...</Loader>}>
+                <Checkout />
+              </Suspense>
             </Route>
           </CartProductContextProvider>
           <Route>

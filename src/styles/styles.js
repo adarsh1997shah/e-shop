@@ -47,3 +47,10 @@ export const BaseListStyle = styled.ul`
     }
   }
 `;
+
+export const Loader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px;
+`;
