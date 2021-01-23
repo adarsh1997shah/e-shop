@@ -61,3 +61,11 @@ export const getFormatCurrency = (currency, number) => {
 
   return formatCurrency;
 };
+
+export const getTotalProductAmount = prices => {
+  let sum = 0;
+
+  const total = prices.reduce((total, acc) => total + acc, sum);
+
+  return total;
+};

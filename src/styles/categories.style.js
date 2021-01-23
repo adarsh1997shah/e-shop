@@ -31,7 +31,7 @@ export const ProductWrapper = styled.div`
 `;
 
 export const ProductList = styled(BaseListStyle)`
-  h3 {
+  .product-list-none {
     margin: 15px 10px;
   }
 
@@ -65,7 +65,7 @@ export const ProductList = styled(BaseListStyle)`
       }
 
       h3 {
-        margin-bottom: 5px;
+        margin-bottom: 15px;
       }
 
       button {

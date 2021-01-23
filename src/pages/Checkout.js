@@ -1,44 +1,86 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MainPageLayout from '../components/MainPageLayout';
-import { getFormatCurrency } from '../helper';
+import { getFormatCurrency, getTotalProductAmount } from '../helper';
 import data from '../datasets/products.json';
 import { useCartProduct } from '../cart.context';
 
-const reducer = (prevState, action) => {
-  switch (action.type) {
-    case 'INCREMENT':
-      prevState += 1;
-      break;
-    case 'DECREMENT':
-      prevState -= 1;
-      break;
-    default:
-      throw new Error('invalid operation');
-  }
-
-  return prevState;
-};
+import { CartTable } from '../styles/checkout.style';
 
 function Checkout() {
   const [cartProducts, setCartProducts] = useState([]);
   const [cartProductsId, cartDispatch] = useCartProduct();
-  const [productCount, productCountDispatch] = useReducer(reducer, 1);
 
   useEffect(() => {
-    const products = data.filter(item => cartProductsId.includes(item.id));
+    const products = data
+      .filter(item => cartProductsId.includes(item.id))
+      .map(item => ({ ...item, quantity: 1, quantityPrice: item.price }));
+
     setCartProducts(products);
   }, [cartProductsId]);
 
+  const handleProductQuantity = (id, action) => {
+    let newState = [];
+    switch (action) {
+      case 'INCREMENT':
+        newState = cartProducts.map(item =>
+          item.id === id
+            ? {
+                ...item,
+                quantity: item.quantity + 1,
+                quantityPrice: item.quantityPrice + item.price,
+              }
+            : item
+        );
+        break;
+      case 'DECREMENT':
+        newState = cartProducts.map(item =>
+          item.id === id
+            ? {
+                ...item,
+                quantity: item.quantity - 1,
+                quantityPrice: item.quantityPrice - item.price,
+              }
+            : item
+        );
+        break;
+      default:
+        throw new Error('invalid operation');
+    }
+
+    console.log(newState);
+    setCartProducts(newState);
+  };
+
+  // Product quantity increase
+  const handleDecrement = e => {
+    handleProductQuantity(e.target.id, 'DECREMENT');
+  };
+
+  // Product quantity decrease
+  const handleIncrement = e => {
+    handleProductQuantity(e.target.id, 'INCREMENT');
+  };
+
+  // Remove product from cart.
   const handleRemoveFromCart = e => {
     const el = e.target;
 
     cartDispatch({ type: 'REMOVE', id: el.id });
   };
 
+  // Get formatted total according to currency.
+  const getFormatProductTotal = () => {
+    const total = getTotalProductAmount(
+      cartProducts.map(item => item.quantityPrice)
+    );
+
+    return getFormatCurrency('USD', total);
+  };
+
   return (
     <MainPageLayout>
       {cartProductsId.length > 0 ? (
-        <table>
+        <CartTable>
           <thead>
             <tr>
               <th>Name</th>
@@ -47,28 +89,34 @@ function Checkout() {
             </tr>
           </thead>
           <tbody>
-            {cartProducts.map(item => (
+            {cartProducts.map((item, index) => (
               <tr key={item.id}>
                 <td>{item.name}</td>
-                <td>{getFormatCurrency(item.currency, item.price)}</td>
+                <td>{getFormatCurrency(item.currency, item.quantityPrice)}</td>
                 <td>
                   <button
                     type="button"
-                    onClick={() => productCountDispatch({ type: 'INCREMENT' })}
-                  >
-                    +
-                  </button>
-                  <span>{productCount}</span>
-                  <button
-                    type="button"
-                    onClick={() => productCountDispatch({ type: 'DECREMENT' })}
-                    disabled={productCount === 1}
+                    id={item.id}
+                    className="quantity-control decrease"
+                    onClick={handleDecrement}
+                    disabled={item.quantity === 1}
                   >
                     -
+                  </button>
+                  <span>{item.quantity}</span>
+
+                  <button
+                    className="quantity-control increase"
+                    id={item.id}
+                    type="button"
+                    onClick={handleIncrement}
+                  >
+                    +
                   </button>
                 </td>
                 <td>
                   <button
+                    className="remove-cart-product"
                     id={item.id}
                     type="button"
                     onClick={handleRemoveFromCart}
@@ -78,10 +126,20 @@ function Checkout() {
                 </td>
               </tr>
             ))}
+            <tr>
+              <td>
+                <h3>Total</h3>
+              </td>
+              <td>
+                <h3>{getFormatProductTotal()}</h3>
+              </td>
+              <td></td>
+              <td></td>
+            </tr>
           </tbody>
-        </table>
+        </CartTable>
       ) : (
-        <h3>No products added to cart</h3>
+        <h2>No products added to cart</h2>
       )}
     </MainPageLayout>
   );

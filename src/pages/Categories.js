@@ -87,10 +87,14 @@ function Categories() {
 
         <ProductList>
           {filterOptions.length === 0 && products.length === 0 && (
-            <h3>Sorry no product for this category</h3>
+            <h3 className="product-list-none">
+              Sorry no product for this category
+            </h3>
           )}
           {filterOptions.length > 0 && products.length === 0 && (
-            <h3>Sorry no product for these filter</h3>
+            <h3 className="product-list-none">
+              Sorry no product for these filter
+            </h3>
           )}
           {products.map(product => (
             <Product
