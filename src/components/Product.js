@@ -9,6 +9,7 @@ function Product({
   thumbnail,
   price,
   currency,
+  inStock,
 }) {
   return (
     <li>
@@ -16,12 +17,20 @@ function Product({
       <div>
         <h2>{name}</h2>
         <h3>{getFormatCurrency(currency, price)}</h3>
+        <p className={inStock ? 'instock' : 'outstock'}>
+          {inStock ? 'In stock' : 'Out of stock'}
+        </p>
         {isAddedToCart ? (
           <button id={id} type="button">
             Added to cart
           </button>
         ) : (
-          <button id={id} type="button" onClick={handleAddToCart}>
+          <button
+            id={id}
+            type="button"
+            onClick={handleAddToCart}
+            disabled={!inStock}
+          >
             Add to cart
           </button>
         )}

@@ -24,10 +24,6 @@ export const FilterList = styled(BaseListStyle)`
 
 export const ProductWrapper = styled.div`
   margin-top: 50px;
-
-  .product-heading {
-    text-decoration: underline;
-  }
 `;
 
 export const ProductList = styled(BaseListStyle)`
@@ -65,6 +61,16 @@ export const ProductList = styled(BaseListStyle)`
       }
 
       h3 {
+        margin-bottom: 5px;
+      }
+
+      p.instock {
+        color: green;
+        margin-bottom: 15px;
+      }
+
+      p.outstock {
+        color: red;
         margin-bottom: 15px;
       }
 
