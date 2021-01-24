@@ -47,7 +47,6 @@ function Checkout() {
         throw new Error('invalid operation');
     }
 
-    console.log(newState);
     setCartProducts(newState);
   };
 
