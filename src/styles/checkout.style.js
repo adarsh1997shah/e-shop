@@ -21,6 +21,11 @@ export const CartTable = styled.table`
       margin: 0 8px;
     }
 
+    .img-preview {
+      width: 30px;
+      height: 30px;
+    }
+
     .quantity-control {
       padding: 0 5px;
       border-radius: 3px;

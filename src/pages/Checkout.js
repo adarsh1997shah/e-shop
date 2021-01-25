@@ -82,14 +82,22 @@ function Checkout() {
         <CartTable>
           <thead>
             <tr>
+              <th>Photo</th>
               <th>Name</th>
               <th>Price</th>
               <th>Quantity</th>
             </tr>
           </thead>
           <tbody>
-            {cartProducts.map((item, index) => (
+            {cartProducts.map(item => (
               <tr key={item.id}>
+                <td>
+                  <img
+                    className="img-preview"
+                    src={item.thumbnail}
+                    alt={item.name}
+                  />
+                </td>
                 <td>{item.name}</td>
                 <td>{getFormatCurrency(item.currency, item.quantityPrice)}</td>
                 <td>
@@ -126,6 +134,7 @@ function Checkout() {
               </tr>
             ))}
             <tr>
+              <td></td>
               <td>
                 <h3>Total</h3>
               </td>
