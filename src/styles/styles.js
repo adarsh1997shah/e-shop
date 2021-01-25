@@ -18,7 +18,7 @@ export const BaseListStyle = styled.ul`
   flex-wrap: wrap;
 
   li {
-    flex-basis: calc(25% - 20px);
+    flex-basis: calc(33.33% - 20px);
     margin: 15px 10px;
     border-radius: 5px;
     transform: translateY(0px);
@@ -31,17 +31,11 @@ export const BaseListStyle = styled.ul`
 
   @media (max-width: 900px) {
     li {
-      flex-basis: calc(33.33% - 20px);
+      flex-basis: calc(50% - 20px);
     }
   }
 
   @media (max-width: 700px) {
-    li {
-      flex-basis: calc(50% - 20px) !important;
-    }
-  }
-
-  @media (max-width: 500px) {
     li {
       flex-basis: 100% !important;
     }

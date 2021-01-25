@@ -105,9 +105,14 @@ function Category({ category }) {
         </h2>
 
         <ProductList>
-          {filteredProducts.length === 0 && (
+          {products.length === 0 && filteredProducts.length === 0 && (
             <h3 className="product-list-none">
-              Sorry no product for these filter
+              Products comming soon for this category.
+            </h3>
+          )}
+          {filteredProducts.length === 0 && products.length !== 0 && (
+            <h3 className="product-list-none">
+              Sorry no product for these filter.
             </h3>
           )}
           {filteredProducts.map(product => (

@@ -93,10 +93,4 @@ export const ProductList = styled(BaseListStyle)`
       transform: translateY(0px);
     }
   }
-
-  @media (max-width: 1050px) {
-    li {
-      flex-basis: calc(33.33% - 20px);
-    }
-  }
 `;
